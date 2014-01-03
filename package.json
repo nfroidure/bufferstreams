@@ -1,0 +1,38 @@
+{
+  "name": "bufferstream",
+  "version": "0.0.1",
+  "description": "Abstract streams to deal with buffers.",
+  "homepage": "https://github.com/nfroidure/BufferStream",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha tests/*.mocha.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nfroidure/BufferStream"
+  },
+  "keywords": [
+    "buffer",
+    "streaming",
+    "stream",
+    "async",
+    "abstract"
+  ],
+	"devDependencies": {
+		"mocha": "1.x.x",
+		"event-stream": "1.x.x"
+	},
+  "author": {
+    "name": "Nicolas Froidure",
+    "url": "http://www.insertafter.com/blog.html"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/nfroidure/BufferStream/blob/master/LICENSE"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/nfroidure/BufferStream/issues"
+  }
+}
