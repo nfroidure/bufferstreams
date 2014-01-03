@@ -1,5 +1,5 @@
 {
-  "name": "bufferstream",
+  "name": "bufferstreams",
   "version": "0.0.1",
   "description": "Abstract streams to deal with buffers.",
   "homepage": "https://github.com/nfroidure/BufferStream",

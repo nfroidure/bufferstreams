@@ -4,7 +4,11 @@ BufferStream abstracts streams to allow you to deal with buffers when it becomes
  necessary (by example: a legacy library that do not support streams).
 
 ## Usage
-Install the npm module:
+Install the [npm module](https://npmjs.org/package/bufferstreams):
+```sh
+npm install bufferstreams --save
+```
+Then, in your scripts:
 ```js
 var BufferStream = require('bufferstream');
 
@@ -15,7 +19,7 @@ Fs.createReadStream('input.txt')
     if(err) {
       throw err;
     }
-    
+
     // buf will contain the whole piped in stream contents
     buf = Buffer(buf.toString(utf-8).repalce('foo', 'bar'));
 
