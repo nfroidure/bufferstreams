@@ -1,4 +1,4 @@
-# BufferStreams [![Build Status](https://travis-ci.org/nfroidure/BufferStreams.png?branch=master)](https://travis-ci.org/nfroidure/BufferStreams)
+# BufferStreams [![NPM version](https://badge.fury.io/js/BufferStreams.png)](https://npmjs.org/package/BufferStreams) [![Build Status](https://travis-ci.org/nfroidure/BufferStreams.png?branch=master)](https://travis-ci.org/nfroidure/BufferStreams)
 
 BufferStreams abstracts streams to allow you to deal with the whole contents in
  a single buffer when it becomes necessary (by example: a legacy library that
