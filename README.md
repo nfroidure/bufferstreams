@@ -26,10 +26,10 @@ Fs.createReadStream('input.txt')
     }
 
     // buf will contain the whole piped in stream contents
-    buf = Buffer(buf.toString(utf-8).repalce('foo', 'bar'));
+    buf = Buffer(buf.toString('utf-8').replace('foo', 'bar'));
 
     // cb is a callback to pass the result back to the piped out stream
-    // first argument is an error that wil be emitted if one
+    // first argument is an error that will be emitted if any
     // the second argument is the modified buffer
     cb(null, buf);
 
