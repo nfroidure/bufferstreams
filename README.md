@@ -1,6 +1,8 @@
-# BufferStreams [![NPM version](https://badge.fury.io/js/bufferstreams.png)](https://npmjs.org/package/bufferstreams) [![Build Status](https://travis-ci.org/nfroidure/BufferStreams.png?branch=master)](https://travis-ci.org/nfroidure/BufferStreams)
+# BufferStreams
 
-BufferStreams abstracts streams to allow you to deal with the whole contents in
+[![NPM version](https://badge.fury.io/js/bufferstreams.png)](https://npmjs.org/package/bufferstreams) [![Build Status](https://travis-ci.org/nfroidure/BufferStreams.png?branch=master)](https://travis-ci.org/nfroidure/BufferStreams) [![devDependency Status](https://david-dm.org/nfroidure/bufferstreams/dev-status.png)](https://david-dm.org/nfroidure/bufferstreams#info=devDependencies) [![Coverage Status](https://coveralls.io/repos/nfroidure/BufferStreams/badge.png?branch=master)](https://coveralls.io/r/nfroidure/BufferStreams?branch=master)
+
+BufferStreams abstracts streams to allow you to deal with their whole content in
  a single buffer when it becomes necessary (by example: a legacy library that
  do not support streams).
 
