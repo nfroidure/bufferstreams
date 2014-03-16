@@ -5,8 +5,10 @@
   "homepage": "https://github.com/nfroidure/BufferStreams",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha tests/*.mocha.js",
-    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- tests/*.mocha.js -R spec -t 5000 && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "test": "./node_modules/mocha/bin/mocha tests/*.mocha.js",
+    "coveralls": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --report lcovonly -- tests/*.mocha.js -R spec -t 5000 && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "cover": "./node_modules/istanbul/lib/cli.js cover --report html ./node_modules/mocha/bin/_mocha -- tests/*.mocha.js -R spec -t 5000",
+    "trinity": "npm-check-updates -u && npm test && git commit package.json -m \"Dependencies update\" && git push"
   },
   "repository": {
     "type": "git",
@@ -21,10 +23,10 @@
   ],
   "devDependencies": {
     "mocha": "1.x.x",
-    "event-stream": "1.x.x",
+    "event-stream": "3.x.x",
     "mocha-lcov-reporter": "0.0.1",
-    "coveralls": "~2.7.1",
-    "istanbul": "~0.2.4"
+    "coveralls": "~2.8.0",
+    "istanbul": "~0.2.6"
   },
   "author": {
     "name": "Nicolas Froidure",
