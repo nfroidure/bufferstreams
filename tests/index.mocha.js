@@ -85,7 +85,7 @@ describe('Abstract buffers', function() {
     it('should work when returning a null buffer', function(done) {
     
       es.readArray(['te', 'st'])
-        .pipe(new BufferStream(function(err, buf, cb){
+        .pipe(BufferStream(function(err, buf, cb){
         cb(null, null);
         }))
         .pipe(es.wait(function(err, data) {

@@ -9,7 +9,7 @@ function BufferStream(cb) {
 
   // Ensure new were used
   if (!(this instanceof BufferStream)) {
-    throw Error('Please use the "new" operator to instanciate a BufferStream.');
+    return new BufferStream(cb);
   }
 
   // Parent constructor
