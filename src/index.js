@@ -1,4 +1,4 @@
-var PassThrough = require('stream').PassThrough;
+var PassThrough = require('readable-stream').PassThrough;
 var util = require('util');
 
 // Inherit of PassThrough stream
