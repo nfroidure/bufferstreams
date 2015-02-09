@@ -22,11 +22,11 @@
     "abstract"
   ],
   "devDependencies": {
-    "mocha": "1.x.x",
-    "event-stream": "3.x.x",
-    "mocha-lcov-reporter": "0.0.1",
     "coveralls": "~2.8.0",
-    "istanbul": "~0.2.6"
+    "istanbul": "~0.2.6",
+    "mocha": "1.x.x",
+    "mocha-lcov-reporter": "0.0.1",
+    "streamtest": "^1.1.0"
   },
   "author": {
     "name": "Nicolas Froidure",
