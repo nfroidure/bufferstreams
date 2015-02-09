@@ -1,6 +1,5 @@
 var assert = require('assert')
   , StreamTest = require('streamtest')
-  , es = require('event-stream')
   , BufferStream = require('../src')
 ;
 
