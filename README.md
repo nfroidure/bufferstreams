@@ -39,6 +39,12 @@ Fs.createReadStream('input.txt')
   .pipe(Fs.createWriteStream('output.txt'));
 ```
 
+Note that you can use BufferStream with the objectMode option. In this case, the
+ given buffer will be an array containing the streamed objects:
+```js
+new BufferStreams({objectMode: true}, myCallback);
+```
+
 ## Contributing
 Feel free to pull your code if you agree with publishing it under the MIT license.
 
