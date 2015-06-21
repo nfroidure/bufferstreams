@@ -4,6 +4,9 @@
   "description": "Abstract streams to deal with the whole buffered contents.",
   "homepage": "https://github.com/nfroidure/BufferStreams",
   "main": "src/index.js",
+  "files": [
+    "src"
+  ],
   "scripts": {
     "test": "mocha tests/*.mocha.js",
     "coveralls": "istanbul cover _mocha --report lcovonly -- tests/*.mocha.js -t 5000 && istanbul-coveralls",
