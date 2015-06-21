@@ -50,6 +50,11 @@ Note that you can use BufferStream with the objectMode option. In this case, the
 new BufferStreams({objectMode: true}, myCallback);
 ```
 
+## Stats
+
+[![NPM](https://nodei.co/npm/bufferstreams.png?downloads=true&stars=true)](https://nodei.co/npm/plexer/)
+[![NPM](https://nodei.co/npm-dl/plexer.png)](https://nodei.co/npm/plexer/)
+
 ## Contributing
 Feel free to pull your code if you agree with publishing it under the MIT license.
 
