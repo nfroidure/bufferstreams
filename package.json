@@ -1,6 +1,6 @@
 {
   "name": "bufferstreams",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Abstract streams to deal with the whole buffered contents.",
   "homepage": "https://github.com/nfroidure/BufferStreams",
   "main": "src/index.js",
