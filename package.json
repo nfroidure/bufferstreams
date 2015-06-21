@@ -8,7 +8,7 @@
     "test": "mocha tests/*.mocha.js",
     "coveralls": "istanbul cover _mocha --report lcovonly -- tests/*.mocha.js -t 5000 && istanbul-coveralls",
     "cover": "istanbul cover --report html _mocha -- tests/*.mocha.js -t 5000",
-    "trinity": "npm-check-updates -u && npm test && git commit package.json -m \"Dependencies update\" && git push"
+    "trinity": "npm-check-updates -u && npm install && npm test && git commit package.json -m \"Dependencies update\" && git push"
   },
   "repository": {
     "type": "git",
