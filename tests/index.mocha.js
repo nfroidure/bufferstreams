@@ -262,6 +262,32 @@ describe('bufferstreams', function() {
               }));
           });
 
+          it('should emit callback errors', function(done) {
+            var caughtError = null;
+
+            StreamTest[version].fromObjects([
+              object1, object2, object3, object4, object5, object6, object7,
+            ])
+            .pipe(new BufferStream({
+              objectMode: true,
+            }, function(err, objs, cb) {
+              if(err) {
+                return done(err);
+              }
+              cb(new Error('Aouch!'), null);
+            })).on('error', function(err) {
+              caughtError = err;
+            })
+              .pipe(StreamTest[version].toObjects(function(err, objs) {
+                if(err) {
+                  return done(err);
+                }
+                assert.equal(caughtError.message, 'Aouch!');
+                assert.deepEqual(objs, []);
+                done();
+              }));
+          });
+
         });
 
       });

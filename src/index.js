@@ -50,6 +50,9 @@ BufferStream.prototype._flush = function(done) {
   var _this = this;
 
   this._cb(null, this._buf, function(err, buf) {
+    if(err) {
+      _this.emit('error', err);
+    }
     if(buf && buf.length) {
       if(_this.__objectMode) {
         buf.forEach(function(chunk) {
