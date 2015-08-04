@@ -24,11 +24,11 @@
     "abstract"
   ],
   "dependencies": {
-    "readable-stream": "^2.0.0"
+    "readable-stream": "^2.0.2"
   },
   "devDependencies": {
     "eslint": "^1.0.0",
-    "istanbul": "^0.3.15",
+    "istanbul": "^0.3.17",
     "istanbul-coveralls": "^1.0.3",
     "mocha": "^2.2.5",
     "mocha-lcov-reporter": "^0.0.2",
