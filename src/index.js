@@ -1,3 +1,5 @@
+'use strict';
+
 var PassThrough = require('readable-stream').PassThrough;
 var util = require('util');
 
@@ -29,10 +31,10 @@ function BufferStream(options, cb) {
   this._cb = cb;
 
   // Internal buffer
-  this._buf = options.objectMode ? [] : Buffer('');
+  this._buf = options.objectMode ? [] : new Buffer('');
 }
 
-BufferStream.prototype._transform = function(chunk, encoding, done) {
+BufferStream.prototype._transform = function(chunk, encoding, done) {
 
   if(this.__objectMode) {
     this._buf.push(chunk);
@@ -44,7 +46,7 @@ BufferStream.prototype._transform = function(chunk, encoding, done) {
 
 };
 
-BufferStream.prototype._flush = function(done) {
+BufferStream.prototype._flush = function(done) {
   var _this = this;
 
   this._cb(null, this._buf, function(err, buf) {

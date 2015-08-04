@@ -8,7 +8,9 @@
     "test": "mocha tests/*.mocha.js",
     "coveralls": "istanbul cover _mocha --report lcovonly -- tests/*.mocha.js -t 5000 && istanbul-coveralls",
     "cover": "istanbul cover --report html _mocha -- tests/*.mocha.js -t 5000",
-    "trinity": "npm-check-updates -u && npm install && npm test && git commit package.json -m \"Dependencies update\" && git push"
+    "trinity": "npm-check-updates -u && npm install && npm test && git commit package.json -m \"Dependencies update\" && git push",
+    "lint": "eslint **/*.s",
+    "cli": "env NPM_RUN_CLI=1"
   },
   "repository": {
     "type": "git",
@@ -25,10 +27,12 @@
     "readable-stream": "^2.0.0"
   },
   "devDependencies": {
+    "eslint": "^1.0.0",
     "istanbul": "^0.3.15",
     "istanbul-coveralls": "^1.0.3",
     "mocha": "^2.2.5",
     "mocha-lcov-reporter": "^0.0.2",
+    "sf-lint": "^1.0.2",
     "streamtest": "^1.2.1"
   },
   "author": {

@@ -1,41 +1,42 @@
-var assert = require('assert')
-  , StreamTest = require('streamtest')
-  , BufferStream = require('../src')
-;
+'use strict';
+
+var assert = require('assert');
+var StreamTest = require('streamtest');
+var BufferStream = require('../src');
 
 // Helpers
 function syncBufferPrefixer(headerText) {
   return new BufferStream({
-    objectMode: headerText instanceof Object
+    objectMode: headerText instanceof Object,
   }, function(err, buf, cb) {
     assert.equal(err, null);
     if(null === buf) {
-      cb(null, Buffer(headerText));
+      cb(null, new Buffer(headerText));
     } else if(buf instanceof Array) {
       buf.unshift(headerText);
       cb(null, buf);
     } else {
-      cb(null, Buffer.concat([Buffer(headerText), buf]));
+      cb(null, Buffer.concat([new Buffer(headerText), buf]));
     }
   });
 }
 function asyncBufferPrefixer(headerText) {
   return new BufferStream({
-    objectMode: headerText instanceof Object
+    objectMode: headerText instanceof Object,
   }, function(err, buf, cb) {
     assert.equal(err, null);
     if(null === buf) {
       setTimeout(function() {
-        cb(null, Buffer(headerText));
+        cb(null, new Buffer(headerText));
       }, 0);
     } else if(buf instanceof Array) {
       setTimeout(function() {
-        buff.push(headerText);
+        buf.push(headerText);
         cb(null, buf);
       }, 0);
     } else {
       setTimeout(function() {
-        cb(null, Buffer.concat([Buffer(headerText), buf]));
+        cb(null, Buffer.concat([new Buffer(headerText), buf]));
       }, 0);
     }
   });
@@ -72,10 +73,13 @@ describe('bufferstreams', function() {
           });
 
           it('should work when returning a null buffer', function(done) {
-          
+
             StreamTest[version].fromChunks(['te', 'st'])
-              .pipe(new BufferStream(function(err, buf, cb){
-              cb(null, null);
+              .pipe(new BufferStream(function(err, buf, cb) {
+                if(err) {
+                  return done(err);
+                }
+                cb(null, null);
               }))
               .pipe(StreamTest[version].toText(function(err, data) {
                 if(err) {
@@ -117,10 +121,13 @@ describe('bufferstreams', function() {
           });
 
           it('should work when returning a null buffer', function(done) {
-          
+
             StreamTest[version].fromChunks(['te', 'st'])
-              .pipe(BufferStream(function(err, buf, cb){
-              cb(null, null);
+              .pipe(new BufferStream(function(err, buf, cb) {
+                if(err) {
+                  return done(err);
+                }
+                cb(null, null);
               }))
               .pipe(StreamTest[version].toText(function(err, data) {
                 if(err) {
@@ -135,7 +142,6 @@ describe('bufferstreams', function() {
             StreamTest[version].fromChunks(['te', 'st'])
               .pipe(asyncBufferPrefixer('plop'))
               .pipe(asyncBufferPrefixer('plip'))
-
               .pipe(asyncBufferPrefixer('plap'))
               .pipe(StreamTest[version].toText(function(err, data) {
                 if(err) {
@@ -151,13 +157,13 @@ describe('bufferstreams', function() {
       });
 
       describe('in object mode', function() {
-        var object1 = {txt: 'te'};
-        var object2 = {txt: 'st'};
-        var object3 = {txt: 'e'};
-        var object4 = {txt: 'd'};
-        var object5 = {txt: 'u'};
-        var object6 = {txt: 'ni'};
-        var object7 = {txt: 't'};
+        var object1 = { txt: 'te' };
+        var object2 = { txt: 'st' };
+        var object3 = { txt: 'e' };
+        var object4 = { txt: 'd' };
+        var object5 = { txt: 'u' };
+        var object6 = { txt: 'ni' };
+        var object7 = { txt: 't' };
 
         describe('synchonously', function() {
 
@@ -174,11 +180,14 @@ describe('bufferstreams', function() {
           });
 
           it('should work when returning a null buffer', function(done) {
-          
+
             StreamTest[version].fromObjects([object1, object2])
               .pipe(new BufferStream({
-                objectMode: true
-              }, function(err, buf, cb){
+                objectMode: true,
+              }, function(err, buf, cb) {
+                if(err) {
+                  return done(err);
+                }
                 cb(null, null);
               }))
               .pipe(StreamTest[version].toObjects(function(err, objs) {
@@ -222,9 +231,12 @@ describe('bufferstreams', function() {
 
           it('should work when returning a null buffer', function(done) {
             StreamTest[version].fromObjects([object1, object2])
-              .pipe(BufferStream({
-                objectMode: true
-              }, function(err, buf, cb){
+              .pipe(new BufferStream({
+                objectMode: true,
+              }, function(err, objs, cb) {
+                if(err) {
+                  return done(err);
+                }
                 cb(null, null);
               }))
               .pipe(StreamTest[version].toObjects(function(err, objs) {
@@ -259,5 +271,3 @@ describe('bufferstreams', function() {
   });
 
 });
-
-
