@@ -152,6 +152,29 @@ describe('bufferstreams', function() {
               }));
           });
 
+          it('should report stream errors', function(done) {
+            var bufferStream = new BufferStream({
+              objectMode: true,
+            }, function(err, objs, cb) {
+              assert.equal(err.message, 'Aouch!');
+              cb(null, []);
+            });
+
+            StreamTest[version].fromErroredChunks(new Error('Aouch!'), [
+              'ou', 'de', 'la', 'li',
+            ]).on('error', function(err) {
+              bufferStream.emit('error', err);
+            })
+            .pipe(bufferStream)
+              .pipe(StreamTest[version].toText(function(err, text) {
+                if(err) {
+                  return done(err);
+                }
+                assert.deepEqual(text, '');
+                done();
+              }));
+          });
+
           it('should emit callback errors', function(done) {
             var caughtError = null;
 
@@ -301,6 +324,29 @@ describe('bufferstreams', function() {
                   return done(err);
                 }
                 assert.deepEqual(objs, [object6, object5, object4, object1, object2]);
+                done();
+              }));
+          });
+
+          it('should report stream errors', function(done) {
+            var bufferStream = new BufferStream({
+              objectMode: true,
+            }, function(err, objs, cb) {
+              assert.equal(err.message, 'Aouch!');
+              cb(null, []);
+            });
+
+            StreamTest[version].fromErroredObjects(new Error('Aouch!'), [
+              object1, object2, object3, object4, object5, object6, object7,
+            ]).on('error', function(err) {
+              bufferStream.emit('error', err);
+            })
+            .pipe(bufferStream)
+              .pipe(StreamTest[version].toObjects(function(err, objs) {
+                if(err) {
+                  return done(err);
+                }
+                assert.deepEqual(objs, []);
                 done();
               }));
           });

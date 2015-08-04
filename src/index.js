@@ -33,27 +33,45 @@ function BufferStream(options, cb) {
   this._cb = cb;
 
   // Add a finished flag
-  this._bufferStreamBufferferStreamFinished = false;
+  this._bufferStreamFinished = false;
 
   // Internal buffer
   this._bufferStreamBuffer = [];
 
-  this.on('finish', function _bufferStreamFinish() {
+  // Internal logic
+  function _bufferStreamCallbackWrapper(err) {
+    var buffer = options.objectMode ?
+      _this._bufferStreamBuffer :
+      Buffer.concat(_this._bufferStreamBuffer);
+
+    err = err || null;
     _this._cb(
-      null,
-      options.objectMode ?
-        _this._bufferStreamBuffer :
-        Buffer.concat(_this._bufferStreamBuffer),
-      function(err, buf) {
-        if(err) {
-          _this.emit('error', err);
-        }
-        _this._bufferStreamBuffer = options.objectMode ? buf || [] : [buf];
-        _this._bufferStreamBufferferStreamFinished = true;
-        _this._read();
+      err,
+      buffer,
+      function(err2, buf) {
+        setImmediate(function() {
+          _this.removeListener('error', _bufferStreamError);
+          if(err2) {
+            _this.emit('error', err2);
+          }
+          _this._bufferStreamBuffer = options.objectMode ? buf || [] : [buf];
+          _this._bufferStreamFinished = true;
+          _this._read();
+        });
       }
     );
-  });
+  }
+
+  function _bufferStreamError(err) {
+    if(_this._bufferStreamFinished) {
+      return;
+    }
+    _bufferStreamCallbackWrapper(err);
+  }
+
+  this.once('finish', _bufferStreamCallbackWrapper);
+
+  this.on('error', _bufferStreamError);
 }
 
 BufferStream.prototype._write = function _bufferStreamWrite(chunk, encoding, done) {
@@ -64,7 +82,7 @@ BufferStream.prototype._write = function _bufferStreamWrite(chunk, encoding, don
 BufferStream.prototype._read = function _bufferStreamRead(n) {
   var _this = this;
 
-  if(_this._bufferStreamBufferferStreamFinished) {
+  if(_this._bufferStreamFinished) {
     while(_this._bufferStreamBuffer.length) {
       if(!_this.push(_this._bufferStreamBuffer.shift())) {
         break;
