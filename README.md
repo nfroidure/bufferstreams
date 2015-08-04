@@ -15,6 +15,9 @@ It is not a good practice, just some glue. Using BufferStreams means:
 * there is no library dealing with streams for your needs
 * you filled an issue to the wrapped library to support streams
 
+BufferStreams can also be used to control the whole stream content in a single
+ point of a streaming pipeline for testing purposes.
+
 ## Usage
 Install the [npm module](https://npmjs.org/package/bufferstreams):
 ```sh
@@ -52,9 +55,8 @@ new BufferStreams({objectMode: true}, myCallback);
 
 ## Stats
 
-[![NPM](https://nodei.co/npm/bufferstreams.png?downloads=true&stars=true)](https://nodei.co/npm/plexer/)
-[![NPM](https://nodei.co/npm-dl/plexer.png)](https://nodei.co/npm/plexer/)
+[![NPM](https://nodei.co/npm/bufferstreams.png?downloads=true&stars=true)](https://nodei.co/npm/bufferstreams/)
+[![NPM](https://nodei.co/npm-dl/bufferstreams.png)](https://nodei.co/npm/bufferstreams/)
 
 ## Contributing
 Feel free to pull your code if you agree with publishing it under the MIT license.
-
