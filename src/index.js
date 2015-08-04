@@ -33,40 +33,44 @@ function BufferStream(options, cb) {
   this._cb = cb;
 
   // Add a finished flag
-  this._bufferStreamFinished = false;
+  this._bufferStreamBufferferStreamFinished = false;
 
   // Internal buffer
-  this._buf = [];
+  this._bufferStreamBuffer = [];
 
-  this.on('finish', function() {
-    _this._cb(null, options.objectMode ? _this._buf : Buffer.concat(_this._buf), function(err, buf) {
-      if(err) {
-        _this.emit('error', err);
+  this.on('finish', function _bufferStreamFinish() {
+    _this._cb(
+      null,
+      options.objectMode ?
+        _this._bufferStreamBuffer :
+        Buffer.concat(_this._bufferStreamBuffer),
+      function(err, buf) {
+        if(err) {
+          _this.emit('error', err);
+        }
+        _this._bufferStreamBuffer = options.objectMode ? buf || [] : [buf];
+        _this._bufferStreamBufferferStreamFinished = true;
+        _this._read();
       }
-      _this._buf = options.objectMode ? buf : [buf];
-      _this._bufferStreamFinished = true;
-      _this._read();
-    });
+    );
   });
 }
 
 BufferStream.prototype._write = function _bufferStreamWrite(chunk, encoding, done) {
-  this._buf.push(chunk);
+  this._bufferStreamBuffer.push(chunk);
   done();
 };
 
 BufferStream.prototype._read = function _bufferStreamRead(n) {
   var _this = this;
-  var buf;
 
-  if(_this._bufferStreamFinished) {
-    while(_this._buf.length) {
-      buf = _this._buf.shift();
-      if(!_this.push(buf)) {
+  if(_this._bufferStreamBufferferStreamFinished) {
+    while(_this._bufferStreamBuffer.length) {
+      if(!_this.push(_this._bufferStreamBuffer.shift())) {
         break;
       }
     }
-    if(0 === _this._buf.length) {
+    if(0 === _this._bufferStreamBuffer.length) {
       _this.push(null);
     }
   }

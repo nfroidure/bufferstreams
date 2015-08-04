@@ -272,6 +272,25 @@ describe('bufferstreams', function() {
               }));
           });
 
+          it('should work when returning legacy null', function(done) {
+            StreamTest[version].fromObjects([object1, object2])
+              .pipe(new BufferStream({
+                objectMode: true,
+              }, function(err, objs, cb) {
+                if(err) {
+                  return done(err);
+                }
+                cb(null, null);
+              }))
+              .pipe(StreamTest[version].toObjects(function(err, objs) {
+                if(err) {
+                  return done(err);
+                }
+                assert.equal(objs.length, 0);
+                done();
+              }));
+          });
+
           it('should work with multiple pipes', function(done) {
             StreamTest[version].fromObjects([object1, object2])
               .pipe(syncBufferPrefixer(object4))
