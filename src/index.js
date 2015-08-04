@@ -1,13 +1,15 @@
 'use strict';
 
-var PassThrough = require('readable-stream').PassThrough;
+var Duplex = require('readable-stream').Duplex;
 var util = require('util');
 
-// Inherit of PassThrough stream
-util.inherits(BufferStream, PassThrough);
+// Inherit of Duplex stream
+util.inherits(BufferStream, Duplex);
 
 // Constructor
 function BufferStream(options, cb) {
+  var _this = this;
+
   // Ensure new were used
   if (!(this instanceof BufferStream)) {
     return new BufferStream(options, cb);
@@ -25,45 +27,49 @@ function BufferStream(options, cb) {
   this.__objectMode = options.objectMode;
 
   // Parent constructor
-  PassThrough.call(this, options);
+  Duplex.call(this, options);
 
   // Keep a reference to the callback
   this._cb = cb;
 
+  // Add a finished flag
+  this._bufferStreamFinished = false;
+
   // Internal buffer
-  this._buf = options.objectMode ? [] : new Buffer('');
+  this._buf = [];
+
+  this.on('finish', function() {
+    _this._cb(null, options.objectMode ? _this._buf : Buffer.concat(_this._buf), function(err, buf) {
+      if(err) {
+        _this.emit('error', err);
+      }
+      _this._buf = options.objectMode ? buf : [buf];
+      _this._bufferStreamFinished = true;
+      _this._read();
+    });
+  });
 }
 
-BufferStream.prototype._transform = function(chunk, encoding, done) {
-
-  if(this.__objectMode) {
-    this._buf.push(chunk);
-  } else {
-    this._buf = Buffer.concat([this._buf, chunk], this._buf.length + chunk.length);
-  }
-
+BufferStream.prototype._write = function _bufferStreamWrite(chunk, encoding, done) {
+  this._buf.push(chunk);
   done();
-
 };
 
-BufferStream.prototype._flush = function(done) {
+BufferStream.prototype._read = function _bufferStreamRead(n) {
   var _this = this;
+  var buf;
 
-  this._cb(null, this._buf, function(err, buf) {
-    if(err) {
-      _this.emit('error', err);
-    }
-    if(buf && buf.length) {
-      if(_this.__objectMode) {
-        buf.forEach(function(chunk) {
-          _this.push(chunk);
-        });
-      } else {
-        _this.push(buf);
+  if(_this._bufferStreamFinished) {
+    while(_this._buf.length) {
+      buf = _this._buf.shift();
+      if(!_this.push(buf)) {
+        break;
       }
     }
-    done();
-  });
+    if(0 === _this._buf.length) {
+      _this.push(null);
+    }
+  }
 
 };
 

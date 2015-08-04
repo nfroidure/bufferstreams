@@ -152,6 +152,30 @@ describe('bufferstreams', function() {
               }));
           });
 
+          it('should emit callback errors', function(done) {
+            var caughtError = null;
+
+            StreamTest[version].fromChunks([
+              'ou', 'de', 'la', 'li',
+            ])
+            .pipe(new BufferStream(function(err, objs, cb) {
+              if(err) {
+                return done(err);
+              }
+              cb(new Error('Aouch!'), '');
+            })).on('error', function(err) {
+              caughtError = err;
+            })
+              .pipe(StreamTest[version].toText(function(err, text) {
+                if(err) {
+                  return done(err);
+                }
+                assert.equal(caughtError.message, 'Aouch!');
+                assert.equal(text, '');
+                done();
+              }));
+          });
+
         });
 
       });
@@ -179,7 +203,7 @@ describe('bufferstreams', function() {
               }));
           });
 
-          it('should work when returning a null buffer', function(done) {
+          it('should work when returning an empty array', function(done) {
 
             StreamTest[version].fromObjects([object1, object2])
               .pipe(new BufferStream({
@@ -188,7 +212,7 @@ describe('bufferstreams', function() {
                 if(err) {
                   return done(err);
                 }
-                cb(null, null);
+                cb(null, []);
               }))
               .pipe(StreamTest[version].toObjects(function(err, objs) {
                 if(err) {
@@ -229,7 +253,7 @@ describe('bufferstreams', function() {
               }));
           });
 
-          it('should work when returning a null buffer', function(done) {
+          it('should work when returning an empty array', function(done) {
             StreamTest[version].fromObjects([object1, object2])
               .pipe(new BufferStream({
                 objectMode: true,
@@ -237,7 +261,7 @@ describe('bufferstreams', function() {
                 if(err) {
                   return done(err);
                 }
-                cb(null, null);
+                cb(null, []);
               }))
               .pipe(StreamTest[version].toObjects(function(err, objs) {
                 if(err) {
@@ -274,7 +298,7 @@ describe('bufferstreams', function() {
               if(err) {
                 return done(err);
               }
-              cb(new Error('Aouch!'), null);
+              cb(new Error('Aouch!'), []);
             })).on('error', function(err) {
               caughtError = err;
             })
