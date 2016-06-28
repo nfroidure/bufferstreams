@@ -2,8 +2,8 @@
 
 [![NPM version](https://img.shields.io/npm/v/bufferstreams.svg)](https://www.npmjs.com/package/bufferstreams)
 [![Build Status](https://travis-ci.org/nfroidure/BufferStreams.svg?branch=master)](https://travis-ci.org/nfroidure/BufferStreams)
-[![Dependency Status](https://img.shields.io/david/nfroidure/bufferstreams.svg?label=deps)](https://david-dm.org/nfroidure/bufferstreams)
-[![devDependency Status](https://img.shields.io/david/dev/nfroidure/bufferstreams.svg?label=devDeps)](https://david-dm.org/nfroidure/bufferstreams#info=devDependencies)
+[![Dependency Status](https://david-dm.org/nfroidure/bufferstreams.svg)](https://david-dm.org/nfroidure/bufferstreams)
+[![devDependency Status](https://david-dm.org/nfroidure/bufferstreams/dev-status.svg)](https://david-dm.org/nfroidure/bufferstreams#info=devDependencies)
 [![Coverage Status](https://coveralls.io/repos/nfroidure/BufferStreams/badge.svg?branch=master)](https://coveralls.io/r/nfroidure/BufferStreams?branch=master)
 [![Code Climate](https://codeclimate.com/github/nfroidure/BufferStreams/badges/gpa.svg)](https://codeclimate.com/github/nfroidure/BufferStreams)
 
