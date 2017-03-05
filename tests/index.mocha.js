@@ -1,41 +1,45 @@
+/* eslint max-nested-callbacks: 0 */
+
 'use strict';
 
-var assert = require('assert');
-var StreamTest = require('streamtest');
-var BufferStream = require('../src');
+const assert = require('assert');
+const StreamTest = require('streamtest');
+const BufferStream = require('../src');
 
 // Helpers
 function syncBufferPrefixer(headerText) {
   return new BufferStream({
     objectMode: headerText instanceof Object,
-  }, function(err, buf, cb) {
+  }, (err, buf, cb) => {
     assert.equal(err, null);
     if(null === buf) {
       cb(null, new Buffer(headerText));
+      return;
     } else if(buf instanceof Array) {
       buf.unshift(headerText);
       cb(null, buf);
-    } else {
-      cb(null, Buffer.concat([new Buffer(headerText), buf]));
+      return;
     }
+    cb(null, Buffer.concat([new Buffer(headerText), buf]));
   });
 }
+
 function asyncBufferPrefixer(headerText) {
   return new BufferStream({
     objectMode: headerText instanceof Object,
-  }, function(err, buf, cb) {
+  }, (err, buf, cb) => {
     assert.equal(err, null);
     if(null === buf) {
-      setTimeout(function() {
+      setTimeout(() => {
         cb(null, new Buffer(headerText));
       }, 0);
     } else if(buf instanceof Array) {
-      setTimeout(function() {
+      setTimeout(() => {
         buf.push(headerText);
         cb(null, buf);
       }, 0);
     } else {
-      setTimeout(function() {
+      setTimeout(() => {
         cb(null, Buffer.concat([new Buffer(headerText), buf]));
       }, 0);
     }
@@ -43,61 +47,65 @@ function asyncBufferPrefixer(headerText) {
 }
 
 // Tests
-describe('bufferstreams', function() {
+describe('bufferstreams', () => {
 
-  it('should fail when callback is not a function', function() {
-    assert.throws(function() {
-      new BufferStream();
+  it('should fail when callback is not a function', () => {
+    assert.throws(() => {
+      new BufferStream(); // eslint-disable-line
     });
   });
 
   // Iterating through versions
-  StreamTest.versions.forEach(function(version) {
+  StreamTest.versions.forEach((version) => {
 
-    describe('for ' + version + ' streams', function() {
+    describe('for ' + version + ' streams', () => {
 
-      describe('in buffer mode', function() {
+      describe('in buffer mode', () => {
 
-        describe('synchonously', function() {
+        describe('synchonously', () => {
 
-          it('should work with one pipe', function(done) {
+          it('should work with one pipe', (done) => {
             StreamTest[version].fromChunks(['te', 'st'])
               .pipe(syncBufferPrefixer('plop'))
-              .pipe(StreamTest[version].toText(function(err, data) {
+              .pipe(StreamTest[version].toText((err, data) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.equal(data, 'ploptest');
                 done();
               }));
           });
 
-          it('should work when returning a null buffer', function(done) {
+          it('should work when returning a null buffer', (done) => {
 
             StreamTest[version].fromChunks(['te', 'st'])
-              .pipe(new BufferStream(function(err, buf, cb) {
+              .pipe(new BufferStream((err, buf, cb) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 cb(null, null);
               }))
-              .pipe(StreamTest[version].toText(function(err, data) {
+              .pipe(StreamTest[version].toText((err, data) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.equal(data, '');
                 done();
               }));
           });
 
-          it('should work with multiple pipes', function(done) {
+          it('should work with multiple pipes', (done) => {
             StreamTest[version].fromChunks(['te', 'st'])
               .pipe(syncBufferPrefixer('plop'))
               .pipe(syncBufferPrefixer('plip'))
               .pipe(syncBufferPrefixer('plap'))
-              .pipe(StreamTest[version].toText(function(err, data) {
+              .pipe(StreamTest[version].toText((err, data) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.equal(data, 'plapplipploptest');
                 done();
@@ -106,154 +114,166 @@ describe('bufferstreams', function() {
 
         });
 
-        describe('asynchonously', function() {
+        describe('asynchonously', () => {
 
-          it('should work with one pipe', function(done) {
+          it('should work with one pipe', (done) => {
             StreamTest[version].fromChunks(['te', 'st'])
               .pipe(asyncBufferPrefixer('plop'))
-              .pipe(StreamTest[version].toText(function(err, data) {
+              .pipe(StreamTest[version].toText((err, data) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.equal(data, 'ploptest');
                 done();
               }));
           });
 
-          it('should work when returning a null buffer', function(done) {
+          it('should work when returning a null buffer', (done) => {
 
             StreamTest[version].fromChunks(['te', 'st'])
-              .pipe(new BufferStream(function(err, buf, cb) {
+              .pipe(new BufferStream((err, buf, cb) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 cb(null, null);
               }))
-              .pipe(StreamTest[version].toText(function(err, data) {
+              .pipe(StreamTest[version].toText((err, data) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.equal(data, '');
                 done();
               }));
           });
 
-          it('should work with multiple pipes', function(done) {
+          it('should work with multiple pipes', (done) => {
             StreamTest[version].fromChunks(['te', 'st'])
               .pipe(asyncBufferPrefixer('plop'))
               .pipe(asyncBufferPrefixer('plip'))
               .pipe(asyncBufferPrefixer('plap'))
-              .pipe(StreamTest[version].toText(function(err, data) {
+              .pipe(StreamTest[version].toText((err, data) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.equal(data, 'plapplipploptest');
                 done();
               }));
           });
 
-          it('should report stream errors', function(done) {
-            var bufferStream = new BufferStream({
+          it('should report stream errors', (done) => {
+            const bufferStream = new BufferStream({
               objectMode: true,
-            }, function(err, objs, cb) {
+            }, (err, objs, cb) => {
               assert.equal(err.message, 'Aouch!');
               cb(null, []);
             });
 
             StreamTest[version].fromErroredChunks(new Error('Aouch!'), [
               'ou', 'de', 'la', 'li',
-            ]).on('error', function(err) {
+            ]).on('error', (err) => {
               bufferStream.emit('error', err);
             })
             .pipe(bufferStream)
-              .pipe(StreamTest[version].toText(function(err, text) {
+              .pipe(StreamTest[version].toText((err, text) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.deepEqual(text, '');
                 done();
               }));
           });
 
-          it('should emit callback errors', function(done) {
-            var caughtError = null;
+          it('should emit callback errors', (done) => {
+            let caughtError = null;
 
             StreamTest[version].fromChunks([
               'ou', 'de', 'la', 'li',
             ])
-            .pipe(new BufferStream(function(err, objs, cb) {
+            .pipe(new BufferStream((err, objs, cb) => {
               if(err) {
-                return done(err);
+                done(err);
+                return;
               }
               cb(new Error('Aouch!'), '');
-            })).on('error', function(err) {
+            }))
+            .on('error', (err) => {
               caughtError = err;
             })
-              .pipe(StreamTest[version].toText(function(err, text) {
-                if(err) {
-                  return done(err);
-                }
-                assert.equal(caughtError.message, 'Aouch!');
-                assert.equal(text, '');
-                done();
-              }));
+            .pipe(StreamTest[version].toText((err, text) => {
+              if(err) {
+                done(err);
+                return;
+              }
+              assert.equal(caughtError.message, 'Aouch!');
+              assert.equal(text, '');
+              done();
+            }));
           });
 
         });
 
       });
 
-      describe('in object mode', function() {
-        var object1 = { txt: 'te' };
-        var object2 = { txt: 'st' };
-        var object3 = { txt: 'e' };
-        var object4 = { txt: 'd' };
-        var object5 = { txt: 'u' };
-        var object6 = { txt: 'ni' };
-        var object7 = { txt: 't' };
+      describe('in object mode', () => {
+        const object1 = { txt: 'te' };
+        const object2 = { txt: 'st' };
+        const object3 = { txt: 'e' };
+        const object4 = { txt: 'd' };
+        const object5 = { txt: 'u' };
+        const object6 = { txt: 'ni' };
+        const object7 = { txt: 't' };
 
-        describe('synchonously', function() {
+        describe('synchonously', () => {
 
-          it('should work with one pipe', function(done) {
+          it('should work with one pipe', (done) => {
             StreamTest[version].fromObjects([object1, object2])
               .pipe(syncBufferPrefixer(object4))
-              .pipe(StreamTest[version].toObjects(function(err, objs) {
+              .pipe(StreamTest[version].toObjects((err, objs) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.deepEqual(objs, [object4, object1, object2]);
                 done();
               }));
           });
 
-          it('should work when returning an empty array', function(done) {
+          it('should work when returning an empty array', (done) => {
 
             StreamTest[version].fromObjects([object1, object2])
               .pipe(new BufferStream({
                 objectMode: true,
-              }, function(err, buf, cb) {
+              }, (err, buf, cb) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 cb(null, []);
               }))
-              .pipe(StreamTest[version].toObjects(function(err, objs) {
+              .pipe(StreamTest[version].toObjects((err, objs) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.equal(objs.length, 0);
                 done();
               }));
           });
 
-          it('should work with multiple pipes', function(done) {
+          it('should work with multiple pipes', (done) => {
             StreamTest[version].fromObjects([object1, object2])
               .pipe(syncBufferPrefixer(object4))
               .pipe(syncBufferPrefixer(object5))
               .pipe(syncBufferPrefixer(object6))
-              .pipe(StreamTest[version].toObjects(function(err, objs) {
+              .pipe(StreamTest[version].toObjects((err, objs) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.deepEqual(objs, [object6, object5, object4, object1, object2]);
                 done();
@@ -262,119 +282,129 @@ describe('bufferstreams', function() {
 
         });
 
-        describe('asynchonously', function() {
+        describe('asynchonously', () => {
 
-          it('should work with one pipe', function(done) {
+          it('should work with one pipe', (done) => {
             StreamTest[version].fromObjects([object1, object2])
               .pipe(syncBufferPrefixer(object4))
-              .pipe(StreamTest[version].toObjects(function(err, objs) {
+              .pipe(StreamTest[version].toObjects((err, objs) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.deepEqual(objs, [object4, object1, object2]);
                 done();
               }));
           });
 
-          it('should work when returning an empty array', function(done) {
+          it('should work when returning an empty array', (done) => {
             StreamTest[version].fromObjects([object1, object2])
               .pipe(new BufferStream({
                 objectMode: true,
-              }, function(err, objs, cb) {
+              }, (err, objs, cb) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 cb(null, []);
               }))
-              .pipe(StreamTest[version].toObjects(function(err, objs) {
+              .pipe(StreamTest[version].toObjects((err, objs) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.equal(objs.length, 0);
                 done();
               }));
           });
 
-          it('should work when returning legacy null', function(done) {
+          it('should work when returning legacy null', (done) => {
             StreamTest[version].fromObjects([object1, object2])
               .pipe(new BufferStream({
                 objectMode: true,
-              }, function(err, objs, cb) {
+              }, (err, objs, cb) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 cb(null, null);
               }))
-              .pipe(StreamTest[version].toObjects(function(err, objs) {
+              .pipe(StreamTest[version].toObjects((err, objs) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.equal(objs.length, 0);
                 done();
               }));
           });
 
-          it('should work with multiple pipes', function(done) {
+          it('should work with multiple pipes', (done) => {
             StreamTest[version].fromObjects([object1, object2])
               .pipe(syncBufferPrefixer(object4))
               .pipe(syncBufferPrefixer(object5))
               .pipe(syncBufferPrefixer(object6))
-              .pipe(StreamTest[version].toObjects(function(err, objs) {
+              .pipe(StreamTest[version].toObjects((err, objs) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.deepEqual(objs, [object6, object5, object4, object1, object2]);
                 done();
               }));
           });
 
-          it('should report stream errors', function(done) {
-            var bufferStream = new BufferStream({
+          it('should report stream errors', (done) => {
+            const bufferStream = new BufferStream({
               objectMode: true,
-            }, function(err, objs, cb) {
+            }, (err, objs, cb) => {
               assert.equal(err.message, 'Aouch!');
               cb(null, []);
             });
 
             StreamTest[version].fromErroredObjects(new Error('Aouch!'), [
               object1, object2, object3, object4, object5, object6, object7,
-            ]).on('error', function(err) {
+            ]).on('error', (err) => {
               bufferStream.emit('error', err);
             })
             .pipe(bufferStream)
-              .pipe(StreamTest[version].toObjects(function(err, objs) {
+              .pipe(StreamTest[version].toObjects((err, objs) => {
                 if(err) {
-                  return done(err);
+                  done(err);
+                  return;
                 }
                 assert.deepEqual(objs, []);
                 done();
               }));
           });
 
-          it('should emit callback errors', function(done) {
-            var caughtError = null;
+          it('should emit callback errors', (done) => {
+            let caughtError = null;
 
             StreamTest[version].fromObjects([
               object1, object2, object3, object4, object5, object6, object7,
             ])
             .pipe(new BufferStream({
               objectMode: true,
-            }, function(err, objs, cb) {
+            }, (err, objs, cb) => {
               if(err) {
-                return done(err);
+                done(err);
+                return;
               }
               cb(new Error('Aouch!'), []);
-            })).on('error', function(err) {
+            }))
+            .on('error', (err) => {
               caughtError = err;
             })
-              .pipe(StreamTest[version].toObjects(function(err, objs) {
-                if(err) {
-                  return done(err);
-                }
-                assert.equal(caughtError.message, 'Aouch!');
-                assert.deepEqual(objs, []);
-                done();
-              }));
+            .pipe(StreamTest[version].toObjects((err, objs) => {
+              if(err) {
+                done(err);
+                return;
+              }
+              assert.equal(caughtError.message, 'Aouch!');
+              assert.deepEqual(objs, []);
+              done();
+            }));
           });
 
         });

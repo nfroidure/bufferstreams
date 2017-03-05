@@ -1,17 +1,17 @@
 'use strict';
 
-var Duplex = require('readable-stream').Duplex;
-var util = require('util');
+const Duplex = require('readable-stream').Duplex;
+const util = require('util');
 
 // Inherit of Duplex stream
 util.inherits(BufferStream, Duplex);
 
 // Constructor
 function BufferStream(options, cb) {
-  var _this = this;
+  const _this = this;
 
   // Ensure new were used
-  if (!(this instanceof BufferStream)) {
+  if(!(_this instanceof BufferStream)) {
     return new BufferStream(options, cb);
   }
 
@@ -24,23 +24,23 @@ function BufferStream(options, cb) {
   if(!(cb instanceof Function)) {
     throw new Error('The given callback must be a function.');
   }
-  this.__objectMode = options.objectMode;
+  _this.__objectMode = options.objectMode;
 
   // Parent constructor
-  Duplex.call(this, options);
+  Duplex.call(_this, options);
 
   // Keep a reference to the callback
-  this._cb = cb;
+  _this._cb = cb;
 
   // Add a finished flag
-  this._bufferStreamFinished = false;
+  _this._bufferStreamFinished = false;
 
   // Internal buffer
-  this._bufferStreamBuffer = [];
+  _this._bufferStreamBuffer = [];
 
   // Internal logic
   function _bufferStreamCallbackWrapper(err) {
-    var buffer = options.objectMode ?
+    const buffer = options.objectMode ?
       _this._bufferStreamBuffer :
       Buffer.concat(_this._bufferStreamBuffer);
 
@@ -48,8 +48,8 @@ function BufferStream(options, cb) {
     _this._cb(
       err,
       buffer,
-      function(err2, buf) {
-        setImmediate(function() {
+      (err2, buf) => {
+        setImmediate(() => {
           _this.removeListener('error', _bufferStreamError);
           if(err2) {
             _this.emit('error', err2);
@@ -69,9 +69,9 @@ function BufferStream(options, cb) {
     _bufferStreamCallbackWrapper(err);
   }
 
-  this.once('finish', _bufferStreamCallbackWrapper);
+  _this.once('finish', _bufferStreamCallbackWrapper);
 
-  this.on('error', _bufferStreamError);
+  _this.on('error', _bufferStreamError);
 }
 
 BufferStream.prototype._write = function _bufferStreamWrite(chunk, encoding, done) {
@@ -80,7 +80,7 @@ BufferStream.prototype._write = function _bufferStreamWrite(chunk, encoding, don
 };
 
 BufferStream.prototype._read = function _bufferStreamRead(n) {
-  var _this = this;
+  const _this = this;
 
   if(_this._bufferStreamFinished) {
     while(_this._bufferStreamBuffer.length) {
