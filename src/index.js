@@ -11,17 +11,17 @@ function BufferStream(options, cb) {
   const _this = this;
 
   // Ensure new were used
-  if(!(_this instanceof BufferStream)) {
+  if (!(_this instanceof BufferStream)) {
     return new BufferStream(options, cb);
   }
 
   // Cast args
-  if(options instanceof Function) {
+  if (options instanceof Function) {
     cb = options;
     options = {};
   }
   options = options || {};
-  if(!(cb instanceof Function)) {
+  if (!(cb instanceof Function)) {
     throw new Error('The given callback must be a function.');
   }
   _this.__objectMode = options.objectMode;
@@ -40,30 +40,26 @@ function BufferStream(options, cb) {
 
   // Internal logic
   function _bufferStreamCallbackWrapper(err) {
-    const buffer = options.objectMode ?
-      _this._bufferStreamBuffer :
-      Buffer.concat(_this._bufferStreamBuffer);
+    const buffer = options.objectMode
+      ? _this._bufferStreamBuffer
+      : Buffer.concat(_this._bufferStreamBuffer);
 
     err = err || null;
-    _this._cb(
-      err,
-      buffer,
-      (err2, buf) => {
-        setImmediate(() => {
-          _this.removeListener('error', _bufferStreamError);
-          if(err2) {
-            _this.emit('error', err2);
-          }
-          _this._bufferStreamBuffer = options.objectMode ? buf || [] : [buf];
-          _this._bufferStreamFinished = true;
-          _this._read();
-        });
-      }
-    );
+    _this._cb(err, buffer, (err2, buf) => {
+      setImmediate(() => {
+        _this.removeListener('error', _bufferStreamError);
+        if (err2) {
+          _this.emit('error', err2);
+        }
+        _this._bufferStreamBuffer = options.objectMode ? buf || [] : [buf];
+        _this._bufferStreamFinished = true;
+        _this._read();
+      });
+    });
   }
 
   function _bufferStreamError(err) {
-    if(_this._bufferStreamFinished) {
+    if (_this._bufferStreamFinished) {
       return;
     }
     _bufferStreamCallbackWrapper(err);
@@ -74,25 +70,28 @@ function BufferStream(options, cb) {
   _this.on('error', _bufferStreamError);
 }
 
-BufferStream.prototype._write = function _bufferStreamWrite(chunk, encoding, done) {
+BufferStream.prototype._write = function _bufferStreamWrite(
+  chunk,
+  encoding,
+  done
+) {
   this._bufferStreamBuffer.push(chunk);
   done();
 };
 
-BufferStream.prototype._read = function _bufferStreamRead(n) {
+BufferStream.prototype._read = function _bufferStreamRead() {
   const _this = this;
 
-  if(_this._bufferStreamFinished) {
-    while(_this._bufferStreamBuffer.length) {
-      if(!_this.push(_this._bufferStreamBuffer.shift())) {
+  if (_this._bufferStreamFinished) {
+    while (_this._bufferStreamBuffer.length) {
+      if (!_this.push(_this._bufferStreamBuffer.shift())) {
         break;
       }
     }
-    if(0 === _this._bufferStreamBuffer.length) {
+    if (0 === _this._bufferStreamBuffer.length) {
       _this.push(null);
     }
   }
-
 };
 
 module.exports = BufferStream;
