@@ -1,3 +1,18 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/nfroidure/BufferStreams/compare/v1.1.1...v2.0.0) (2017-12-06)
+
+
+### build
+
+* **metapak-nfroidure:** Add metapak-nfroidure ([ed104f6](https://github.com/nfroidure/BufferStreams/commit/ed104f6))
+
+
+### BREAKING CHANGES
+
+* **metapak-nfroidure:** Removing support for versions minors to the last LTS
+
+
+
 ## Change Log
 
 ### upcoming (2017/03/05 07:36 +00:00)
