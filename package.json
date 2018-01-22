@@ -46,7 +46,7 @@
     "abstract"
   ],
   "dependencies": {
-    "debug": "2.6.1",
+    "debug": "^2.6.9",
     "readable-stream": "^2.0.2"
   },
   "devDependencies": {
