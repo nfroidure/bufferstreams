@@ -1,3 +1,13 @@
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/nfroidure/BufferStreams/compare/v2.0.0...v2.0.1) (2018-04-23)
+
+
+### Bug Fixes
+
+* Remove debug dependency ([2719573](https://github.com/nfroidure/BufferStreams/commit/2719573))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/nfroidure/BufferStreams/compare/v1.1.1...v2.0.0) (2017-12-06)
 
