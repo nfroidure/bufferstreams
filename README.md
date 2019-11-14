@@ -7,13 +7,14 @@
 # bufferstreams
 > Abstract streams to deal with the whole buffered contents.
 
-[![NPM version](https://badge.fury.io/js/bufferstreams.svg)](https://npmjs.org/package/bufferstreams)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/bufferstreams/blob/master/LICENSE)
 [![Build status](https://secure.travis-ci.org/nfroidure/bufferstreams.svg)](https://travis-ci.org/nfroidure/bufferstreams)
+[![Coverage Status](https://coveralls.io/repos/nfroidure/bufferstreams/badge.svg?branch=master)](https://coveralls.io/r/nfroidure/bufferstreams?branch=master)
+[![NPM version](https://badge.fury.io/js/bufferstreams.svg)](https://npmjs.org/package/bufferstreams)
 [![Dependency Status](https://david-dm.org/nfroidure/bufferstreams.svg)](https://david-dm.org/nfroidure/bufferstreams)
 [![devDependency Status](https://david-dm.org/nfroidure/bufferstreams/dev-status.svg)](https://david-dm.org/nfroidure/bufferstreams#info=devDependencies)
-[![Coverage Status](https://coveralls.io/repos/nfroidure/bufferstreams/badge.svg?branch=master)](https://coveralls.io/r/nfroidure/bufferstreams?branch=master)
+[![Package Quality](http://npm.packagequality.com/shield/bufferstreams.svg)](http://packagequality.com/#?package=bufferstreams)
 [![Code Climate](https://codeclimate.com/github/nfroidure/bufferstreams.svg)](https://codeclimate.com/github/nfroidure/bufferstreams)
-[![Dependency Status](https://dependencyci.com/github/nfroidure/bufferstreams/badge)](https://dependencyci.com/github/nfroidure/bufferstreams)
 
 
 [//]: # (::contents:start)
@@ -97,6 +98,9 @@ A function to handle the buffered content.
 Feel free to pull your code if you agree with publishing it under the MIT license.
 
 [//]: # (::contents:end)
+
+# Authors
+- [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
 [MIT](https://github.com/nfroidure/bufferstreams/blob/master/LICENSE)
