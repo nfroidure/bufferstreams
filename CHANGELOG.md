@@ -1,3 +1,7 @@
+# [3.0.0](https://github.com/nfroidure/BufferStreams/compare/v2.0.1...v3.0.0) (2019-11-15)
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/nfroidure/BufferStreams/compare/v2.0.0...v2.0.1) (2018-04-23)
 
