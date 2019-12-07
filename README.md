@@ -31,6 +31,7 @@ It is not a good practice, just some glue. Using `bufferstreams` means:
  point of a streaming pipeline for testing purposes.
 
 ## Usage
+
 Install the [npm module](https://npmjs.org/package/bufferstreams):
 ```sh
 npm install bufferstreams --save
@@ -88,11 +89,6 @@ Use if piped in streams are in object mode. In this case, an array of the
 Type: `Function`, required.
 
 A function to handle the buffered content.
-
-## Stats
-
-[![NPM](https://nodei.co/npm/bufferstreams.png?downloads=true&stars=true)](https://nodei.co/npm/bufferstreams/)
-[![NPM](https://nodei.co/npm-dl/bufferstreams.png)](https://nodei.co/npm/bufferstreams/)
 
 ## Contributing
 Feel free to pull your code if you agree with publishing it under the MIT license.
