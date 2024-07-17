@@ -7,96 +7,155 @@
 # bufferstreams
 > Abstract streams to deal with the whole buffered contents.
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/bufferstreams/blob/master/LICENSE)
-[![Build status](https://secure.travis-ci.org/nfroidure/bufferstreams.svg)](https://travis-ci.org/nfroidure/bufferstreams)
-[![Coverage Status](https://coveralls.io/repos/nfroidure/bufferstreams/badge.svg?branch=master)](https://coveralls.io/r/nfroidure/bufferstreams?branch=master)
-[![NPM version](https://badge.fury.io/js/bufferstreams.svg)](https://npmjs.org/package/bufferstreams)
-[![Dependency Status](https://david-dm.org/nfroidure/bufferstreams.svg)](https://david-dm.org/nfroidure/bufferstreams)
-[![devDependency Status](https://david-dm.org/nfroidure/bufferstreams/dev-status.svg)](https://david-dm.org/nfroidure/bufferstreams#info=devDependencies)
-[![Package Quality](http://npm.packagequality.com/shield/bufferstreams.svg)](http://packagequality.com/#?package=bufferstreams)
-[![Code Climate](https://codeclimate.com/github/nfroidure/bufferstreams.svg)](https://codeclimate.com/github/nfroidure/bufferstreams)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/bufferstreams/blob/main/LICENSE)
+[![Coverage Status](https://coveralls.io/repos/github/git://github.com/nfroidure/BufferStreams/badge.svg?branch=main)](https://coveralls.io/github/git://github.com/nfroidure/BufferStreams?branch=main)
 
 
 [//]: # (::contents:start)
 
 `bufferstreams` abstracts streams to allow you to deal with their whole content
- in a single buffer when it becomes necessary (by example: a legacy library that
- do not support streams).
+in a single buffer when it becomes necessary (by example: a legacy library that
+do not support streams).
 
-It is not a good practice, just some glue. Using `bufferstreams` means:
-* there is no library dealing with streams for your needs
-* you filled an issue to the wrapped library to support streams
+It is not a good practice (dealing with the whole stream content means you need
+to keep the whole stream content in memory which is probably not what you intent
+by using streams), just some glue. Using `bufferstreams` means:
+
+- there is no library dealing with streams for your needs
+- you filled an issue to the wrapped library to support streams
 
 `bufferstreams` can also be used to control the whole stream content in a single
- point of a streaming pipeline for testing purposes.
+point of a streaming pipeline for testing purposes.
 
 ## Usage
 
 Install the [npm module](https://npmjs.org/package/bufferstreams):
+
 ```sh
 npm install bufferstreams --save
 ```
+
 Then, in your scripts:
+
 ```js
-var fs = require('fs');
-var bufferstreams = require('bufferstreams');
+import fs from 'fs';
+import { BufferStream } from 'bufferstreams';
 
 fs.createReadStream('input.txt')
-  .pipe(new bufferstreams(function(err, buf, cb) {
+  .pipe(
+    new BufferStream((err, buf, cb) => {
+      // err will be filled with an error if the piped in stream emits one.
+      if (err) {
+        throw err;
+      }
 
-    // err will be filled with an error if the piped in stream emits one.
-    if(err) {
-      throw err;
-    }
+      // buf will contain the whole piped in stream contents
+      buf = Buffer.from(buf.toString('utf-8').replace('foo', 'bar'));
 
-    // buf will contain the whole piped in stream contents
-    buf = Buffer(buf.toString('utf-8').replace('foo', 'bar'));
-
-    // cb is a callback to pass the result back to the piped out stream
-    // first argument is an error that will be emitted if any
-    // the second argument is the modified buffer
-    cb(null, buf);
-
-  }))
+      // cb is a callback to pass the result back to the piped out stream
+      // first argument is an error that will be emitted if any
+      // the second argument is the modified buffer
+      cb(null, buf);
+    }),
+  )
   .pipe(fs.createWriteStream('output.txt'));
 ```
 
 Note that you can use `bufferstreams` with the objectMode option. In this case,
- the given buffer will be an array containing the streamed objects:
+the given buffer will be an array containing the streamed objects:
+
 ```js
-new BufferStreams({objectMode: true}, myCallback);
+new BufferStreams(myCallback, { objectMode: true });
 ```
 
-## API
+`bufferstreams` exposes a utility function for functional programming:
 
-### Stream : BufferStreams([options], callback)
+```js
+import { streamBuffer } from 'bufferstreams';
 
-#### options
+process.stdin.pipe(streamBuffer(myCallback)).pipe(process.stdout);
+```
 
-##### options.objectMode
-Type: `Boolean`
-Default value: `false`
+Finally `bufferstreams` exposes another function for objects mode buffering:
 
-Use if piped in streams are in object mode. In this case, an array of the
- buffered will be transmitted to the `callback` function.
+```js
+import { bufferObjects } from 'bufferstreams';
 
-##### options.*
-
-`bufferstreams` inherits of Stream.Duplex, the options are passed to the
- parent constructor so you can use it's options too.
-
-##### callback(err, buf, cb)
-Type: `Function`, required.
-
-A function to handle the buffered content.
+process.stdin.pipe(bufferObjects(myCallback)).pipe(process.stdout);
+```
 
 ## Contributing
-Feel free to pull your code if you agree with publishing it under the MIT license.
+
+Feel free to contribute with your code if you agree with publishing it under the
+MIT license.
 
 [//]: # (::contents:end)
+
+# API
+## Classes
+
+<dl>
+<dt><a href="#BufferStream">BufferStream</a></dt>
+<dd><p>Buffer the stream content and bring it into the provided callback</p>
+</dd>
+</dl>
+
+## Functions
+
+<dl>
+<dt><a href="#bufferStream">bufferStream(bufferCallback, options)</a> ⇒</dt>
+<dd><p>Utility function if you prefer a functional way of using this lib</p>
+</dd>
+<dt><a href="#bufferObjects">bufferObjects(bufferCallback, options)</a> ⇒</dt>
+<dd><p>Utility function to buffer objet mode streams</p>
+</dd>
+</dl>
+
+<a name="BufferStream"></a>
+
+## BufferStream
+Buffer the stream content and bring it into the provided callback
+
+**Kind**: global class  
+<a name="new_BufferStream_new"></a>
+
+### new BufferStream(bufferCallback, options)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bufferCallback | <code>function</code> | A function to handle the buffered content. |
+| options | <code>Object</code> | inherits of Stream.Duplex, the options are passed to the parent constructor so you can use it's options too. |
+| options.objectMode | <code>boolean</code> | Use if piped in streams are in object mode. In this case, an array of the buffered will be transmitted to the callback function. |
+
+<a name="bufferStream"></a>
+
+## bufferStream(bufferCallback, options) ⇒
+Utility function if you prefer a functional way of using this lib
+
+**Kind**: global function  
+**Returns**: Stream  
+
+| Param |
+| --- |
+| bufferCallback | 
+| options | 
+
+<a name="bufferObjects"></a>
+
+## bufferObjects(bufferCallback, options) ⇒
+Utility function to buffer objet mode streams
+
+**Kind**: global function  
+**Returns**: Stream  
+
+| Param |
+| --- |
+| bufferCallback | 
+| options | 
+
 
 # Authors
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/bufferstreams/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/bufferstreams/blob/main/LICENSE)
