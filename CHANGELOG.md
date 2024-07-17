@@ -1,3 +1,17 @@
+# [4.0.0](https://github.com/nfroidure/BufferStreams/compare/v3.0.0...v4.0.0) (2024-07-17)
+
+
+### Code Refactoring
+
+* **api:** typescript rewrite ([9bdffa4](https://github.com/nfroidure/BufferStreams/commit/9bdffa413890add00130eb0be6ea18a735614434)), closes [#5](https://github.com/nfroidure/BufferStreams/issues/5)
+
+
+### BREAKING CHANGES
+
+* **api:** Require Node20+
+
+
+
 # [3.0.0](https://github.com/nfroidure/BufferStreams/compare/v2.0.1...v3.0.0) (2019-11-15)
 
 
