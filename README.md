@@ -8,7 +8,7 @@
 > Abstract streams to deal with the whole buffered contents.
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/bufferstreams/blob/main/LICENSE)
-[![Coverage Status](https://coveralls.io/repos/github/git://github.com/nfroidure/BufferStreams/badge.svg?branch=main)](https://coveralls.io/github/git://github.com/nfroidure/BufferStreams?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/nfroidure/bufferstreams/badge.svg?branch=main)](https://coveralls.io/github/nfroidure/bufferstreams?branch=main)
 
 
 [//]: # (::contents:start)

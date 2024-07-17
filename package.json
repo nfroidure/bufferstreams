@@ -57,7 +57,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/nfroidure/BufferStreams"
+    "url": "git+https://github.com/nfroidure/bufferstreams.git"
   },
   "keywords": [
     "buffer",
