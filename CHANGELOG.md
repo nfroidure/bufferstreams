@@ -1,3 +1,22 @@
+# [5.0.0](https://github.com/nfroidure/bufferstreams/compare/v4.0.0...v5.0.0) (2025-06-16)
+
+
+### Bug Fixes
+
+* **docs:** fix git repository url ([cbbd8a1](https://github.com/nfroidure/bufferstreams/commit/cbbd8a1bcb89217041ebf1e17f784626753316c6))
+
+
+### chore
+
+* **dependencies:** update dependencies ([7a59c1a](https://github.com/nfroidure/bufferstreams/commit/7a59c1a0926ac87e323ca9053b1202352a3f0b39))
+
+
+### BREAKING CHANGES
+
+* **dependencies:** Will require Node22 (last LTS)
+
+
+
 # [4.0.0](https://github.com/nfroidure/BufferStreams/compare/v3.0.0...v4.0.0) (2024-07-17)
 
 
