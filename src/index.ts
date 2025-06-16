@@ -1,4 +1,4 @@
-import { Duplex, type Writable } from 'stream';
+import { Duplex, type Writable } from 'node:stream';
 import { YError } from 'yerror';
 
 export type BufferStreamOptions = {
