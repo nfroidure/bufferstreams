@@ -101,7 +101,7 @@ describe('bufferstreams', () => {
 
         StreamTest.fromChunks([Buffer.from('te'), Buffer.from('st')])
           .pipe(
-            new BufferStream(async (buf) => {
+            new BufferStream(async (buf: Buffer) => {
               return buf;
             }),
           )

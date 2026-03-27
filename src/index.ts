@@ -1,7 +1,7 @@
 import { Duplex, type Writable } from 'node:stream';
 import { YError } from 'yerror';
 
-export type BufferStreamOptions = {
+export interface BufferStreamOptions {
   objectMode: boolean;
 };
 export type BufferStreamItem<
@@ -31,7 +31,7 @@ const DEFAULT_BUFFER_STREAM_OPTIONS = {
 class BufferStream<T, O extends Partial<BufferStreamOptions>> extends Duplex {
   private _options: BufferStreamOptions = DEFAULT_BUFFER_STREAM_OPTIONS;
   private _bufferCallback: BufferStreamCallback<O, T>;
-  private _finished: boolean = false;
+  private _finished = false;
   private _buffer: BufferStreamItem<O, T>[] = [];
 
   /**
