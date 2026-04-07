@@ -1,3 +1,5 @@
+## [6.0.1](https://github.com/nfroidure/bufferstreams/compare/v6.0.0...v6.0.1) (2026-04-07)
+
 # [6.0.0](https://github.com/nfroidure/bufferstreams/compare/v5.0.0...v6.0.0) (2026-03-27)
 
 # [5.0.0](https://github.com/nfroidure/bufferstreams/compare/v4.0.0...v5.0.0) (2025-06-16)
